@@ -1,6 +1,7 @@
 package com.instacart.android.challenges
 
 import com.instacart.android.challenges.network.NetworkService
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.Nullable
 import io.reactivex.disposables.Disposable
@@ -25,13 +26,17 @@ class MainActivityViewModel {
     }
 
 
-    fun loadDeliveryItems(): Disposable {
-        return NetworkService.api.fetchOrderByIdObservable(1).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe({
+    fun loadDeliveryItems(scheduler: Scheduler = AndroidSchedulers.mainThread()): Disposable {
+        return NetworkService.api.fetchOrderByIdObservable(2).subscribeOn(Schedulers.io())
+                .observeOn(scheduler).subscribe({
                     println(it.items)
                     itemListViewState = ItemListViewState("Delivery Items", false, it.items)
                 }, {
                     println(it)
                 })
     }
+
+
+
+
 }

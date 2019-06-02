@@ -5,7 +5,6 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.disposables.CompositeDisposable
@@ -15,8 +14,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var toolbar: Toolbar
-    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ItemAdapter
 
     private val viewModel = MainActivityViewModel()
@@ -24,9 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val itemScreenContainerView = findViewById<View>(R.id.item_screen_container)
-        bindViews(itemScreenContainerView)
+        bindViews(item_screen_container)
 
         viewModel.setStateUpdateListener(object : MainActivityViewModel.UpdateListener {
             override fun onUpdate(state: ItemListViewState) {
@@ -53,14 +48,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindViews(parent: View) {
-        toolbar = parent.findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        recyclerView = parent.findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(parent.context, RecyclerView.VERTICAL, false)
-        recyclerView.addItemDecoration(DividerDecoration(Color.BLACK, 1, Rect(100, 0, 0, 0)))
+        recycler_view.layoutManager = LinearLayoutManager(parent.context, RecyclerView.VERTICAL, false)
+        recycler_view.addItemDecoration(DividerDecoration(Color.BLACK, 1, Rect(100, 0, 0, 0)))
 
 
         adapter = ItemAdapter()
-        recyclerView.adapter = adapter
+        recycler_view.adapter = adapter
     }
 }
